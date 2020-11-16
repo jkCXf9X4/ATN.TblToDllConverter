@@ -1,0 +1,98 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>Catia.R24</AssemblyName>
+    <PackageId>ATN.$(AssemblyName)</PackageId>
+    <ProjectGuid>CA8326CE-96DC-4029-AE89-50E370CF7B30</ProjectGuid>
+    <Version>0.0.4</Version>
+    <Authors>jkCXf9X4</Authors>
+    <Company>ATN</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(TargetDir)\dll\INFITF.dll">
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ATN.TblToDllConverter" Version="0.0.5" >
+    <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <PackageReference Include="ilmerge" Version="3.0.41">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+</ItemGroup>
+
+<!-- <Target Name="TestBeforeBuild" BeforeTargets="BeforeBuild">
+<Exec Command="echo outputhPath $(OutputPath) " />
+<Exec Command="echo projectDir $(ProjectDir) " />
+<Exec Command="echo targetDir $(TargetDir) " />
+<Exec Command="echo IntermediateOutputPath $(IntermediateOutputPath) " />
+<Exec Command="echo BaseOutputPath $(BaseOutputPath) " />
+<Exec Command="echo BaseIntermediateOutputPath $(BaseIntermediateOutputPath) " />
+<Exec Command="echo MSBuildProjectName $(MSBuildProjectName) " />
+<Exec Command="echo AssemblyName $(AssemblyName) " />
+</Target> -->
+
+<Target Name="CustomBeforeBuild" BeforeTargets="BeforeBuild">
+<ItemGroup>
+  <tblConverterNugetShort Include="$(NuGetPackageRoot)\atn.tbltodllconverter\0.0.5\tools\ATN.TblToDllConverter.exe" />
+</ItemGroup>
+
+<PropertyGroup>
+  <tblConverterNuget>@(tblConverterNugetShort->'%(fullpath)')</tblConverterNuget>
+  <TblInputPath>C:\ds\240715ALV\win_b64\code\bin\</TblInputPath>
+  <DllOutputPath>$(TargetDir)dll\</DllOutputPath>
+  <AssemblyNamespace>Dassault.$(AssemblyName)</AssemblyNamespace>
+</PropertyGroup>
+
+<Exec Command="echo dll collection staring" />
+<Exec Command="echo tblConverterNuget $(tblConverterNuget)" />
+<Exec Command="echo TblInputPath $(TblInputPath)" />
+<Exec Command="echo DllOutputPath $(DllOutputPath)" />
+<Exec Command="echo AssemblyNamespace $(AssemblyNamespace)" />
+
+<Exec Command="echo tblConverter starting" />
+<Error Condition="!Exists($(tblConverterNuget))" Text="You are trying to use the a package, but it is not installed or at the correct location" />
+<Exec Command="$(tblConverterNuget) $(TblInputPath) $(DllOutputPath) $(AssemblyNamespace)" />
+</Target>
+
+ <Target Name="AfterCoreBuild" AfterTargets="CoreBuild">
+  <ItemGroup>
+  <ILMergePackageDir Include="$(NuGetPackageRoot)\ilmerge\3.0.41\tools\net452\ilmerge.exe" />
+  </ItemGroup>
+
+<PropertyGroup>
+  <ILMergePackage>@(ILMergePackageDir->'%(fullpath)')</ILMergePackage>
+  <DllOutputPath>/out:$(TargetDir)$(AssemblyName).dll</DllOutputPath>
+  <DllInputMain>$(TargetDir)$(AssemblyName).dll</DllInputMain>
+  <DllInput1>$(TargetDir)dll\*.dll</DllInput1>
+</PropertyGroup>
+
+<Exec Command="echo ILMerge starting" />
+<Exec Command="echo ILMergePackage $(ILMergePackage)" />
+<Exec Command="echo DllOutputPath $(DllOutputPath)" />
+<Exec Command="echo DllInputMain $(DllInputMain)" />
+<Exec Command="echo DllInput1 $(DllInput1)" />
+
+<Exec Command="echo IlRePack starting" />
+<Error Condition="!Exists($(ILMergePackage))" Text="You are trying to use the a package, but it is not installed or at the correct location" />
+<Exec Command="$(ILMergePackage) /wildcards $(DllOutputPath) $(DllInputMain) $(DllInput1)" />
+</Target> 
+   
+
+</Project>

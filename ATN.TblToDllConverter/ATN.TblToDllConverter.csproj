@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <!-- <PlatformTarget>x64</PlatformTarget> -->
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>ATN.TblToDllConverter</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <ProjectGuid>6e3c0032-0a2d-4610-bc59-4ca1fc0c899c</ProjectGuid>
+    <Version>0.0.5</Version>
+    <Authors>jkCXf9X4</Authors>
+    <Company>ATN</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsTool>true</IsTool>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+ </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+</ItemGroup>
+
+</Project>

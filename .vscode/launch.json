@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug_TblToDllConverter",
+            "type": "clr",
+            "request": "launch",
+
+            "preLaunchTask": "Build_TblToDllConverter",
+            "program": "${workspaceFolder}/TblToDllConverter/bin/Debug/net48/TblToDllConverter.exe",
+            "args": [
+                "C:/tbl/",
+                "C:/Users/Catia.R24.dll",
+                "Dassault.Catia.R24",
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+        },
+    ]
+}
